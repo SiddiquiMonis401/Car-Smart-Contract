@@ -7,23 +7,14 @@
 const hre = require("hardhat");
 
 async function main() {
-  const currentTimestampInSeconds = Math.round(Date.now() / 1000);
-  const unlockTime = currentTimestampInSeconds + 60;
-
-  const lockedAmount = hre.ethers.utils.parseEther("0.001");
-
-  const Lock = await hre.ethers.getContractFactory("Lock");
   const Car = await hre.ethers.getContractFactory("Car");
-  const lock = await Lock.deploy(unlockTime, { value: lockedAmount });
+
   const car = await Car.deploy();
 
-  await lock.deployed();
-  await car.deployed();
+  const contractDetails = await car.deployed();
 
   console.log(
-    `Lock with ${ethers.utils.formatEther(
-      lockedAmount
-    )}ETH and unlock timestamp ${unlockTime} deployed to ${lock.address}`
+    `Car contract is deployed to ${JSON.stringify(contractDetails.address)}`
   );
 }
 
